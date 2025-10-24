@@ -1,5 +1,8 @@
 # 📚 Sistema de Cadastro de Notas - TypeBB
 
+João Pedro Roveri - 2510193
+Alexandre Facheris Rebello - 2506485
+
 Um sistema completo desenvolvido em **TypeScript** para cadastro de alunos e suas notas em um banco de dados **PostgreSQL**.
 
 ## 🎯 Descrição
