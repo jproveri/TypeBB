@@ -1,121 +1,161 @@
-# Projeto de Teste: Conexão TypeScript com PostgreSQL
+# 📚 Sistema de Cadastro de Notas - TypeBB
 
-Olá, alunos do professor Eduardo Popovici!
+Um sistema completo desenvolvido em **TypeScript** para cadastro de alunos e suas notas em um banco de dados **PostgreSQL**.
 
-Você pode precisar montar um banco de dados para realizar a atividade. Para isso utilize a postagem pela URL https://www.eduardopopovici.com/2025/09/como-montar-um-conteiner-com-postgre.html 
+## 🎯 Descrição
 
-Este é um projeto simples, criado como material de apoio para a aula, com o objetivo de demonstrar uma funcionalidade essencial no desenvolvimento de software: **conectar uma aplicação a um banco de dados e inserir informações**.
+Este projeto permite o cadastro de alunos com suas informações pessoais e notas de três matérias (Matemática, História e Geografia). O sistema calcula automaticamente a média de 8 notas por matéria e armazena os dados em um banco PostgreSQL.
 
-Importante, os passos de como executar de fim a fim, serão realizados em sala de aulas.
+## 🚀 Funcionalidades
 
-<img width="1240" height="677" alt="image" src="https://github.com/user-attachments/assets/74b13711-87cc-4b2f-9077-c5a6c5478079" />
+- ✅ Cadastro de dados pessoais do aluno (nome, série, idade)
+- ✅ Coleta de 8 notas por matéria
+- ✅ Cálculo automático de médias
+- ✅ Validação de campos obrigatórios
+- ✅ Conexão segura com banco PostgreSQL
+- ✅ Interface interativa via terminal
+- ✅ Tratamento de erros
 
-Dica, programe escutando música, vai te ajudar durante o processo. Aqui vai minha recomendação https://www.youtube.com/watch?v=kWRScWjjLIY
+## 🛠️ Tecnologias Utilizadas
 
----
+- **TypeScript** - Linguagem principal
+- **Node.js** - Runtime JavaScript
+- **PostgreSQL** - Banco de dados
+- **pg** - Driver PostgreSQL para Node.js
+- **readline-sync** - Interface interativa de terminal
 
-### O Que Este Projeto Faz?
+## 📋 Pré-requisitos
 
-A funcionalidade do script é muito direta:
+Antes de executar o projeto, certifique-se de ter:
 
-1.  **Conecta-se** a um banco de dados PostgreSQL (que deve estar rodando via Docker).
-2.  **Pede ao usuário** para digitar um nome, uma idade e uma data de nascimento diretamente no terminal.
-3.  **Executa um comando SQL `INSERT`** para salvar esses dados em uma tabela chamada `pessoas`.
-4.  **Encerra a conexão** de forma segura.
+- Node.js (versão 16 ou superior)
+- PostgreSQL instalado e configurado
+- npm ou yarn
 
-<img width="1586" height="897" alt="image" src="https://github.com/user-attachments/assets/5aee0574-e544-4094-8765-80e5b86c0a87" />
+## 🔧 Instalação
 
-### Quais ferramentas você vai precisar?
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/jproveri/TypeBB.git
+   cd TypeBB
+   ```
 
-1. VSCode
-2. Docker
-3. PGAdmin
-4. Typescript - NodeJS
-5. GitBash
+2. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
 
-<img width="1916" height="1018" alt="image" src="https://github.com/user-attachments/assets/149ff003-802f-4ba5-8020-f6de3d902db4" />
+3. **Configure o banco de dados PostgreSQL:**
+   
+   Crie a tabela no seu banco:
+   ```sql
+   CREATE TABLE notas (
+       nome VARCHAR(100),
+       serie VARCHAR(20),
+       idade INT,
+       matematica DECIMAL(4,2),
+       historia DECIMAL(4,2),
+       geografica DECIMAL(4,2)
+   );
+   ```
 
+4. **Configure as credenciais do banco:**
+   
+   Edite o arquivo `ExercicioBancoDeDados.ts` e ajuste as configurações:
+   ```typescript
+   const dbConfig = {
+       user: "seu_usuario",
+       host: "localhost",
+       database: "seu_banco",
+       password: "sua_senha",
+       port: 5432,
+   };
+   ```
 
----
+## ▶️ Como Executar
 
-### ⚠️ Aviso de Segurança Importante: Credenciais no Código
+1. **Compile o TypeScript:**
+   ```bash
+   npx tsc
+   ```
 
-No arquivo `ExercicioBancoDeDados.ts`, o usuário e a senha do banco de dados estão escritos diretamente no código (uma prática conhecida como *hardcoding*).
+2. **Execute o programa:**
+   ```bash
+   node dist/ExercicioBancoDeDados.js
+   ```
 
-```typescript
-const dbConfig = {
-    user: 'aluno',
-    host: 'localhost',
-    database: 'db_profedu',
-    password: '102030', // <--- PERIGO!
-    port: 5432,
-};
+## 📖 Como Usar
+
+1. **Execute o programa** e siga as instruções no terminal
+2. **Digite o nome** do aluno
+3. **Informe a série** (número)
+4. **Digite a idade** (número)
+5. **Insira 8 notas para Matemática** (uma por vez)
+6. **Insira 8 notas para História** (uma por vez)
+7. **Insira 8 notas para Geografia** (uma por vez)
+8. O sistema calculará as médias e salvará no banco
+
+### Exemplo de Execução
+
+```
+--- Cadastro de Novo Aluno ---
+Digite o nome: João Silva
+Digite a série: 8
+Digite a idade: 14
+
+--- Digite as notas das matérias ---
+Digite a nota 1 de Matemática: 8.5
+Digite a nota 2 de Matemática: 7.0
+...
+→ Média de Matemática: 7.75
+
+Conectando ao banco de dados...
+✅ Conexão bem-sucedida! Inserindo dados...
+
+-----------------------------------------
+✅ Dados inseridos com sucesso!
+Nome: João Silva
+Série: 8
+Idade: 14
+Médias → Matemática: 7.75, História: 8.25, Geografia: 7.50
+-----------------------------------------
 ```
 
-**Para um exercício em aula, isso é aceitável para simplificar o aprendizado.** No entanto, em um projeto real, **isso é uma falha de segurança gravíssima**. Se este código fosse enviado para um repositório público no GitHub, qualquer pessoa poderia ver suas credenciais e obter acesso total ao seu banco de dados.
-
-A maneira correta de gerenciar informações sensíveis como essa é usar **Variáveis de Ambiente**, geralmente com o auxílio de arquivos `.env` e bibliotecas como `dotenv`.
-
----
-
-### Estrutura do Projeto
-
-Ao clonar ou criar o projeto, você encontrará os seguintes arquivos e diretórios principais:
+## 📁 Estrutura do Projeto
 
 ```
-/ESCREVER-NO-BANCO
-|
-|-- /dist/
-|   |-- ExercicioBancoDeDados.js  <-- O código JavaScript compilado que será executado.
-|
-|-- /node_modules/
-|   |-- ... (várias pastas)     <-- Dependências e bibliotecas do projeto.
-|
-|-- ExercicioBancoDeDados.ts      <-- Nosso código-fonte principal, escrito em TypeScript.
-|
-|-- package.json                  <-- O "RG" do projeto: lista as dependências e scripts.
-|
-|-- tsconfig.json                 <-- Arquivo de configuração com as regras para o compilador TypeScript.
-|
-|-- README.md                     <-- Este arquivo de documentação.
+TypeBB/
+├── ExercicioBancoDeDados.ts    # Código fonte principal
+├── ExercicioBancoDeDados.js    # Arquivo JavaScript compilado
+├── package.json                # Dependências e scripts
+├── tsconfig.json              # Configurações TypeScript
+├── dist/                      # Arquivos compilados
+│   └── ExercicioBancoDeDados.js
+├── node_modules/              # Dependências instaladas
+└── README.md                  # Este arquivo
 ```
 
----
+## 🗃️ Estrutura do Banco de Dados
 
-### Como Executar o Projeto
+| Campo      | Tipo           | Descrição                    |
+|------------|----------------|------------------------------|
+| nome       | VARCHAR(100)   | Nome completo do aluno       |
+| serie      | VARCHAR(20)    | Série/ano escolar            |
+| idade      | INT            | Idade do aluno               |
+| matematica | DECIMAL(4,2)   | Média das notas de matemática|
+| historia   | DECIMAL(4,2)   | Média das notas de história  |
+| geografica | DECIMAL(4,2)   | Média das notas de geografia |
 
-Siga os passos abaixo no terminal, dentro da pasta do projeto.
+## ⚙️ Configurações do TypeScript
 
-#### Pré-requisitos
-1.  Ter o **Node.js** instalado na sua máquina.
-2.  Garantir que o **container Docker do PostgreSQL** esteja em execução.
+O projeto usa as seguintes configurações no `tsconfig.json`:
 
-#### Passo a Passo
+- **Target:** ES2020
+- **Module:** CommonJS
+- **Module Resolution:** Node
+- **Strict Mode:** Habilitado
+- **ES Module Interop:** Habilitado
 
-1.  **Instalar as Dependências**
-    Este comando lê o `package.json` e baixa todas as bibliotecas necessárias (como `pg` e `readline-sync`) para a pasta `node_modules`.
-    ```bash
-    npm install
-    ```
-
-2.  **Compilar o Código TypeScript**
-    Este comando invoca o compilador do TypeScript (`tsc`), que lê o arquivo `ExercicioBancoDeDados.ts`, segue as regras do `tsconfig.json`, e gera o arquivo JavaScript correspondente dentro da pasta `/dist`.
-    ```bash
-    npx tsc
-    ```
-
-3.  **Executar o Programa**
-    Agora, executamos o arquivo JavaScript que foi gerado no passo anterior.
-    ```bash
-    node dist/ExercicioBancoDeDados.js
-    ```
-<img width="1913" height="1017" alt="image" src="https://github.com/user-attachments/assets/3cdfb7a7-cec9-4bac-b12e-a5d4fd5b7b5b" />
-
-Ao executar o último comando, o terminal irá fazer as perguntas. Após respondê-las, verifique no pgAdmin se os novos dados apareceram na sua tabela `pessoas`!
-
-Quando acessar o banco de dados, será possível validar se houve a escrita ou não.
-
-<img width="1903" height="1018" alt="image" src="https://github.com/user-attachments/assets/48e94be0-8ee9-46c2-acbc-e5a2a87911fb" />
+## 🔒 Segurança
 
 
-Bons estudos!
